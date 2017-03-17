@@ -1,0 +1,10 @@
+name: mlfs
+channels: !!python/tuple
+- defaults
+dependencies:
+- python=3.5.3=1
+- numpy=1.12.0=py35_0
+- scipy=0.19.0=np112py35_0
+- pip:
+  - isort==4.2.5
+prefix: /Users/se7entyse7en/miniconda3/envs/mlfs
