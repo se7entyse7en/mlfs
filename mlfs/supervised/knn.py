@@ -6,6 +6,10 @@ from numpy import linalg as LA
 
 from scipy.spatial import distance
 
+import fire
+from sklearn.datasets import load_digits
+
+from mlfs import datasets
 from mlfs.supervised.base import IModel
 
 
@@ -50,3 +54,21 @@ class KNearestNeighbors(IModel):
         accuracy = np.mean(predictions == y_test)
 
         return {'accuracy': accuracy}
+
+
+class KNearestNeighborsDemo(object):
+
+    def run(self, k=1, distance='L2', training_set_percentage=80, seed=0):
+        mnist = load_digits()
+        ds = datasets.split(mnist, training_set_percentage, seed=seed)
+
+        m = KNearestNeighbors(k=k, distance=distance)
+        m.fit(ds['training_set']['data'], ds['training_set']['target'])
+        evaluation = m.evaluate(ds['test_set']['data'],
+                                ds['test_set']['target'])
+
+        return evaluation
+
+
+if __name__ == '__main__':
+    fire.Fire(KNearestNeighborsDemo)
