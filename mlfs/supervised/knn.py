@@ -6,8 +6,9 @@ from numpy import linalg as LA
 
 from scipy.spatial import distance
 
-import fire
 from sklearn.datasets import load_digits
+
+import fire
 
 from mlfs import datasets
 from mlfs.supervised.base import IModel
