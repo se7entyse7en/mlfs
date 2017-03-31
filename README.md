@@ -26,6 +26,11 @@ For example:
     conda env create -f environment.yml
 
 
+## Model Selection
+
+- [K-Fold Cross Validation](mlfs/model_selection.py)
+
+
 ## Supervised
 
 - [K-Nearest-Neighbors](mlfs/supervised/knn.py)
