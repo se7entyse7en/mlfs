@@ -11,6 +11,7 @@ from sklearn.datasets import load_digits
 import fire
 
 from mlfs import datasets
+from mlfs.model_selection import KFoldCrossValidation
 from mlfs.supervised.base import IModel
 
 
@@ -59,16 +60,28 @@ class KNearestNeighbors(IModel):
 
 class KNearestNeighborsDemo(object):
 
-    def run(self, k=1, distance='L2', training_set_percentage=80, seed=0):
+    def run_simple(self, k=1, distance='L2', training_set_percentage=80,
+                   seed=0):
         mnist = load_digits()
         ds = datasets.split(mnist, training_set_percentage, seed=seed)
 
         m = KNearestNeighbors(k=k, distance=distance)
         m.fit(ds['training_set']['data'], ds['training_set']['target'])
-        evaluation = m.evaluate(ds['test_set']['data'],
-                                ds['test_set']['target'])
+        score = m.evaluate(ds['test_set']['data'], ds['test_set']['target'])
 
-        return evaluation
+        return score
+
+    def run_k_fold(self, k=1, distance='L2', folds_n=3):
+        mnist = load_digits()
+
+        m = KNearestNeighbors(k=k, distance=distance)
+        kfold_cv = KFoldCrossValidation(folds_n=folds_n)
+
+        scores = kfold_cv.fit_and_evaluate(m, mnist['data'], mnist['target'])
+
+        return scores.tolist()
+
+    run = run_simple
 
 
 if __name__ == '__main__':
